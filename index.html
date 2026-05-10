@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USCP Screenshot Practice Test</title>
+<style>
+body{background:#0f172a;color:white;font-family:Arial,sans-serif;margin:0;padding:20px;}
+.container{max-width:1000px;margin:auto;}
+.question{background:#1e293b;padding:18px;border-radius:10px;margin-bottom:20px;}
+button{background:#38bdf8;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;font-weight:bold;}
+.feedback{margin-top:10px;padding:10px;border-radius:8px;display:none;}
+.correct{background:#14532d;}
+.incorrect{background:#7f1d1d;}
+label{display:block;margin:8px 0;}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>USCP Screenshot Practice Test</h1>
+<p>Questions pulled only from the screenshots you uploaded.</p>
+<div id="quiz"></div>
+</div>
+
+<script>
+const questions = [
+{q:"Reasonable force, under the Fourth Amendment, is the amount of force that:",a:["The Officer felt was necessary under the circumstances","An average citizen would feel was necessary under the circumstances","Is greater than what is reasonably necessary under the circumstances","An average citizen would feel was reasonably necessary under the circumstances"],c:0},
+{q:"According to Directive 1020.004, if a person requests medical treatment and complains of excessive pain, the person shall be:",a:["Taken to a hospital for treatment","Left alone to recover","Given water to recover","Told to seek treatment from personal physician"],c:0},
+{q:"An officer may use deadly force to destroy an animal that represents a ____ to the public.",a:["Threat","Nuisance","Stray","Irritation"],c:0},
+{q:"The Threat Assessment Section's response to a criminal threat consists of a follow-up interview to learn as much information about the subject and to prepare a ____ on the subject.",a:["251 Report and 252 Report","PD-76","Threat Assessment Report","Dossier"],c:2},
+{q:"A pedestrian is stopped for suspicious activity. He consents to a voluntary search of his backpack. The officer locates documents containing suspicious references to the Speaker of the House. What element of the USCP should be contacted without delay?",a:["Investigations Section","Threat Assessment Section","Intelligence Section","Patrol Mobile Response Division"],c:1},
+{q:"Officer Thompson is dispatched to room 2115 of the RHOB for a theft report, resulting in an arrest. What report form should Officer Thompson complete?",a:["PD-251, PD-255, and PD-168","MARK 43 Criminal Offense","PD-255, CP-04, MARK 43, PD-168 and PD-252","PD-251 and PD-252"],c:1},
+{q:"Officer Sharp arrested a 27-year-old male for shoplifting. Identify which form the officer will use as his testimony of the facts.",a:["PD-168","PD-255","Mark 43 external document","Mark 43 statement of facts document"],c:3},
+{q:"When responding to a duress alarm in Room 242 of the Russell Senate Office Building, what is the proper procedure?",a:["Reset the alarm and leave","Proceed to the room quietly to investigate","Leave the alarm box in place and advise staff to make notification to the Speaker","Call communications with the situation and have them reset the alarm"],c:1},
+{q:"While on patrol you conduct a traffic stop on a vehicle on Independence Avenue, SW. Communications advises you the vehicle is registered in DC to Timothy Jenkins, current and displayed correctly. Mr. Jenkins presents a Maryland Driver's License and copy of title showing he owns the vehicle. What is the most appropriate charge?",a:["No valid permit","Spurious / altered tags","Altered tags","Dead Tags"],c:3},
+{q:"Officer Sanchez observes a taxicab driver and passenger arguing on Pennsylvania Avenue. The driver does not want to allow the passenger into his taxicab because he does not believe he will pay the fare. What should Officer Sanchez do?",a:["Advise the driver to take the passenger to his destination","Advise the driver that he can request payment from the passenger first and then take him to his destination","Arrest the passenger for Failure to Pay Taxi Fare","Go back on patrol. There is nothing Officer Sanchez can do"],c:1},
+{q:"Persons arrested for Simple Assault - Domestic Violence should be:",a:["Given citation release","Treated as lockups","Can bond out that evening","Pay the collateral fine and be released"],c:1},
+{q:"If you observed the operator of a moving vehicle performing the following, which would constitute inattentive driving according to the law?",a:["Terminating a phone call","Placing an emergency call to 911","Calling their immediate supervisor","Text messaging on their cell phone"],c:3},
+{q:"Which direction should an officer face and what distance should the officer stand when assigned to the walk-through magnetometer?",a:["Stand 4 feet to either side of the WTM, facing the flow of individuals coming through","Stand approximately 2 feet away from the WTM, facing the incoming flow of individuals coming through the WTM","Stand directly in front of the WTM","Distance and location are irrelevant to operating the WTM"],c:1},
+{q:"The complainant for a Fugitive from Justice charge is:",a:["The officer who makes the arrest","The jurisdiction who originated the warrant","The officer who originated the warrant","The judge who issued the warrant"],c:1},
+{q:"The proper sequence on a driver's permit ONLY is:",a:["Full name, last name first, DOB, race and sex","Permit number, full name, DOB, race and sex","Full name, last name first, DOB, race, sex and SSN","Permit number, expiration date and make/model"],c:1},
+{q:"Officer Lane determines that Manny is a danger to himself and others. The officers intend to commit Manny for mental observation. There are no injuries or medical concerns. What is the correct procedure?",a:["Officer Lane should call DCFD and have them transport Manny to CPEP","Manny's property should be removed before transport to CPEP","Handcuffs should not be used","Officer Lane should notify CPEP, who will send a commitment team"],c:1},
+{q:"While either on or off duty, members of the USCP have full authority to:",a:["Make arrests for any offenses occurring within the Capitol Grounds","Make arrests for any offenses occurring within Washington DC","Make arrests for any offenses occurring outside the Capitol Grounds","Make arrests for any offenses occurring outside the Extended Jurisdiction Zone"],c:0},
+{q:"The minimum legal requirement necessary for a police officer to conduct a frisk is best identified as:",a:["Reasonable suspicion that the detainee may be armed and dangerous","Probable cause that the detainee may be armed and dangerous","Mere suspicion that the detainee may be armed and dangerous","Only a hunch that the detainee may be armed and dangerous"],c:0},
+{q:"You observe a vehicle that has DC tags expired two months ago. The driver purchased the vehicle from his neighbor but never registered it in DC. Communications verifies the vehicle is titled in the driver's name. What should you do?",a:["Write an NOI for unregistered vehicle less than 30 days","Write NOIs for unregistered vehicle more than 30 days and dead tags and tow the vehicle","Write NOIs for spurious tags and registered vehicle more than 30 days and tow the vehicle","Write NOIs for dead tags and no valid permit and allow the driver to leave"],c:1},
+{q:"During a 10-100S situation, where you have probable cause to believe that a suspect represents an immediate threat of death or serious bodily injury and you make the decision to apply deadly force, your gunfire should be directed:",a:["High center mass of the subject","Pelvic area where explosives are less likely","To the head of the suspect","Do not engage or direct weapon fire at the 10-100S suspect"],c:2},
+{q:"What is the minimum safe distance recommended when transmitting over a USCP cruiser radio in a 10-100S situation?",a:["20 feet","50 feet","100 feet","200 feet"],c:2},
+{q:"When the Incident Command System has been initiated, what would the Incident Commander be replaced by?",a:["At the end of their normal tour of duty","When relieved by a higher ranking officer","When relieved by a patrol supervisor","When the incident lasts longer than two hours"],c:1},
+{q:"During a 10-100 incident, responding units should respond to the:",a:["Command Post","Rally Point","Staging Area","Assembly Area"],c:2},
+{q:"The established and announced location where resources, employees, and equipment are located temporarily awaiting tactical assignment is the definition of:",a:["Command Post","Rally Point","Staging Area","Assembly Area"],c:2},
+{q:"During the arrest process, how many times should the prisoner be searched?",a:["Once","Twice","Three times","Four times"],c:2},
+{q:"During an incident, an authority structure in which the Incident Commander is shared by two or more individuals speaking with one voice for the entire incident is called:",a:["Capitol Police Board","Anarchy","Unified command","Incident command"],c:2},
+{q:"The green flashing light on an Emergency Response Vehicle signifies:",a:["Helicopter landing area","Command Post","Triage area","Staging area"],c:1},
+{q:"Prior to entering an area where other officers could be present in an active threat situation, you should:",a:["Announce BLUE several times and listen for a response","Extend your non-weapon hand and give a thumbs up","Ensure your weapon is not pointed at other officers","All of the above"],c:3},
+{q:"After making the initial room entry and needing additional assistance from your teammates outside the room, you should yell in a loud voice:",a:["Cover me","Trailer","Push","Come in here"],c:1},
+{q:"You and your team are responding to an active threat and encounter an officer who has been shot. You should:",a:["Continue pushing towards the threat and advise him or her to hang in there","Call the officer's name and assign another officer to treat him/her","Immediately stop and pick up the officer and take him/her to responding EMS","Call out the location of the officer, take his/her weapon if condition dictates it, request an extraction team and continue pushing towards the threat"],c:3},
+{q:"Whose responsibility is it to communicate to the dispatcher when moving in the diamond/T formation?",a:["Right or left flanker","Point","Team leader","Rear guard"],c:2},
+{q:"The preferred formation for responding to an active shooter incident indoors is:",a:["Square","Diamond or T","Column","Safety circle"],c:1},
+{q:"When stacked outside of a room ready to make entry, who gives the command to MOVE?",a:["The point man","The second officer in the stack","The third officer in the stack","The team leader"],c:1},
+{q:"What is the primary objective in an active threat response?",a:["Assemble an emergency entry team","Neutralize the threat","Rescue victims","Establish perimeter"],c:1},
+{q:"Biased based profiling is strictly prohibited and must not be the basis for detention, interdiction, or ____ treatment.",a:["Disillusioned","Disparate","Desired","Required"],c:1},
+{q:"Criminal profiling is a ____ tool in the enforcement of law and the suppression of criminal activity.",a:["Lengthy","Questionable","Legitimate","Prohibited"],c:2},
+{q:"Which isolation option has the individuals remain in the same location at the time of the emergency?",a:["Shelter in Place","Evacuation","Relocation","Deny Entry"],c:0},
+{q:"What is the first step with communicating the LCAN phase of the process?",a:["Lacrimation","Location - specific to general","Location - general to specific","Latitude"],c:2},
+{q:"What are the isolation distances for each state of matter?",a:["25ft solids, 50ft liquid, 100ft gas","75ft solids, 150ft liquid, 300ft gas","1000ft solid, 200ft liquid, 400ft gas","200ft solid, 400ft liquid, 800ft gas"],c:1},
+{q:"When recognizing an incident, which is an example of a sign?",a:["Runny nose","Headache","Nausea","Numbness"],c:0},
+{q:"Which of these extremist movements are typically hostile towards law enforcement officers?",a:["Anti-government militia groups","Sovereign Citizens","Boogaloo Movement","All of the above"],c:3},
+{q:"Some lone actor terrorists created ____ which inspired other lone actor terrorist attacks.",a:["Online manifestos","Pamphlets","Homemade firearms","Video games"],c:0},
+{q:"What do Boogaloo extremists want?",a:["US Military to leave the Middle East","A second civil war in the United States","A new government similar to Nazi Germany","Independence from the United Kingdom"],c:1},
+{q:"What was the intended target of United Flight 93, which crashed in a field in Pennsylvania on September 11, 2001?",a:["The Empire State Building","The White House","The United States Capitol","CIA Headquarters"],c:2}
+];
+
+const quiz = document.getElementById("quiz");
+
+questions.forEach(function(q,index){
+  const div = document.createElement("div");
+  div.className = "question";
+
+  let answers = "";
+  q.a.forEach(function(choice,i){
+    answers += '<label><input type="radio" name="q' + index + '" value="' + i + '"> ' + choice + '</label>';
+  });
+
+  div.innerHTML =
+    '<h3>Question ' + (index+1) + '</h3>' +
+    '<p>' + q.q + '</p>' +
+    answers +
+    '<button type="button" onclick="checkAnswer(' + index + ')">Check Answer</button>' +
+    '<div id="feedback' + index + '" class="feedback"></div>';
+
+  quiz.appendChild(div);
+});
+
+function checkAnswer(index){
+  const selected = document.querySelector('input[name="q' + index + '"]:checked');
+  const feedback = document.getElementById("feedback" + index);
+
+  if(!selected){
+    feedback.style.display = "block";
+    feedback.className = "feedback incorrect";
+    feedback.innerHTML = "Select an answer.";
+    return;
+  }
+
+  const answer = parseInt(selected.value, 10);
+
+  if(answer === questions[index].c){
+    feedback.style.display = "block";
+    feedback.className = "feedback correct";
+    feedback.innerHTML = "Correct";
+  } else {
+    feedback.style.display = "block";
+    feedback.className = "feedback incorrect";
+    feedback.innerHTML = "Incorrect. Correct answer: " + questions[index].a[questions[index].c];
+  }
+}
+</script>
+</body>
+</html>
